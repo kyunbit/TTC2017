@@ -284,7 +284,7 @@ function receivedMessage(event) {
          }
 
       };
-
+      console.log(options)
       return rp(options).then(JSON.parse)
         .then(function (parsed) {
           console.log(parsed.events.event[0].title);
@@ -339,7 +339,8 @@ function receivedMessage(event) {
 
 
                   callSendAPI(messageData);
-      });
+      })
+      .catch(err => console.log(err))
     }
   })
 
