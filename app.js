@@ -245,10 +245,10 @@ function receivedMessage(event) {
 
     console.log('Yay, got Wit response: ' + JSON.stringify(data));
     if (typeof data.entities !== 'undefined'){
-      console.log(data.entities);
+      // console.log(data.entities);
 
       if (typeof data.entities.location !== 'undefined'){
-                // console.log('location');
+                console.log('location');
         var locationText = data.entities.location[0].value;
 
 
@@ -261,8 +261,8 @@ function receivedMessage(event) {
         if (typeof data.entities.datetime[0].to !== 'undefined'){
           var dateTextStart = data.entities.datetime[0].from.value.substring(0,10);
           var dateTextEnd = data.entities.datetime[0].to.value.substring(0,10);
-          // console.log(dateTextEnd);
-          // console.log(dateTextStart)
+          console.log(dateTextEnd);
+          console.log(dateTextStart)
         } else {
           var dateTextStart = data.entities.datetime[0].value.substring(0,10);
           var dateTextEnd = moment(dateTextStart,'YYYY-MM-DD').add(5,'days');
@@ -284,7 +284,7 @@ function receivedMessage(event) {
          }
 
       };
-      console.log(options)
+      console.log(options);
       return rp(options).then(JSON.parse)
         .then(function (parsed) {
           console.log(parsed.events.event[0].title);
@@ -341,6 +341,8 @@ function receivedMessage(event) {
                   callSendAPI(messageData);
       })
       .catch(err => console.log(err))
+    } else {
+      console.log('no entities')
     }
   })
 
