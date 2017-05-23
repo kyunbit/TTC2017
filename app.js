@@ -242,8 +242,11 @@ function receivedMessage(event) {
 
   client.message(messageText, {})
   .then((data) => {
+
     console.log('Yay, got Wit response: ' + JSON.stringify(data));
     if (typeof data.entities !== 'undefined'){
+      console.log(data.entities);
+
       if (typeof data.entities.location !== 'undefined'){
                 // console.log('location');
         var locationText = data.entities.location[0].value;
@@ -266,7 +269,7 @@ function receivedMessage(event) {
 
         }
       } 
-      console.log(data.entities);
+      // console.log(data.entities);
  
       var options = { method: 'GET',
         url: 'http://api.eventful.com/json/events/search',
@@ -278,10 +281,7 @@ function receivedMessage(event) {
            app_key: 'hKZTrnwDc2Ls8WCJ',
            image_sizes: 'large'
            // image_sizes: 'block100,large,dropshadow250' 
-         },
-        headers: 
-         { 'postman-token': '9c7034c7-9aed-bb0a-6f8c-8ca8ec804e6a',
-           'cache-control': 'no-cache' } 
+         }
 
       };
 
