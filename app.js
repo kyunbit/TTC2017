@@ -20,7 +20,7 @@ const
 
   const {Wit,log} = require('node-wit');  
 
-  const client = new Wit({accessToken: 'DBKY3BGPLBTY32DKEEYISSNSSUTJGBEJ'});
+  const client = new Wit({accessToken: WIT_TOKEN});
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -343,84 +343,84 @@ function receivedMessage(event) {
     }
   })
 
-  if (isEcho) {
-    // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s", 
-      messageId, appId, metadata);
-    return;
-  } else if (quickReply) {
-    var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
+  // if (isEcho) {
+  //   // Just logging message echoes to console
+  //   console.log("Received echo for message %s and app %d with metadata %s", 
+  //     messageId, appId, metadata);
+  //   return;
+  // } else if (quickReply) {
+  //   var quickReplyPayload = quickReply.payload;
+  //   console.log("Quick reply for message %s with payload %s",
+  //     messageId, quickReplyPayload);
 
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
-  }
+  //   sendTextMessage(senderID, "Quick reply tapped");
+  //   return;
+  // }
 
-  if (messageText) {
+  // if (messageText) {
 
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
+  //   // If we receive a text message, check to see if it matches any special
+  //   // keywords and send back the corresponding example. Otherwise, just echo
+  //   // the text we received.
+  //   switch (messageText) {
+  //     case 'image':
+  //       sendImageMessage(senderID);
+  //       break;
 
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
+  //     case 'gif':
+  //       sendGifMessage(senderID);
+  //       break;
 
-      case 'audio':
-        sendAudioMessage(senderID);
-        break;
+  //     case 'audio':
+  //       sendAudioMessage(senderID);
+  //       break;
 
-      case 'video':
-        sendVideoMessage(senderID);
-        break;
+  //     case 'video':
+  //       sendVideoMessage(senderID);
+  //       break;
 
-      case 'file':
-        sendFileMessage(senderID);
-        break;
+  //     case 'file':
+  //       sendFileMessage(senderID);
+  //       break;
 
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
+  //     case 'button':
+  //       sendButtonMessage(senderID);
+  //       break;
 
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
+  //     case 'generic':
+  //       sendGenericMessage(senderID);
+  //       break;
 
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
+  //     case 'receipt':
+  //       sendReceiptMessage(senderID);
+  //       break;
 
-      case 'quick reply':
-        sendQuickReply(senderID);
-        break;        
+  //     case 'quick reply':
+  //       sendQuickReply(senderID);
+  //       break;        
 
-      case 'read receipt':
-        sendReadReceipt(senderID);
-        break;        
+  //     case 'read receipt':
+  //       sendReadReceipt(senderID);
+  //       break;        
 
-      case 'typing on':
-        sendTypingOn(senderID);
-        break;        
+  //     case 'typing on':
+  //       sendTypingOn(senderID);
+  //       break;        
 
-      case 'typing off':
-        sendTypingOff(senderID);
-        break;        
+  //     case 'typing off':
+  //       sendTypingOff(senderID);
+  //       break;        
 
-      case 'account linking':
-        sendAccountLinking(senderID);
-        break;
+  //     case 'account linking':
+  //       sendAccountLinking(senderID);
+  //       break;
 
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
-  }
+  //     default:
+  //       sendTextMessage(senderID, messageText);
+  //   }
+  // } else if (messageAttachments) {
+  //   sendTextMessage(senderID, "Message with attachment received");
+  // }
 }
 
 
