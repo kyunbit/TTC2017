@@ -278,7 +278,7 @@ function receivedMessage(event) {
            // keywords: 'books',
            location: locationText,
            date: dateTextStart+"00-"+dateTextEnd+"00",
-           app_key: EVENTFUL_KEY,
+           app_key: process.env.EVENTFUL_KEY,
            image_sizes: 'large'
            // image_sizes: 'block100,large,dropshadow250' 
          }
