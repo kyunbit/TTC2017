@@ -239,24 +239,22 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
+  // Pass the text to Wit
 
   client.message(messageText, {})
   .then((data) => {
-
+    // Check response
     console.log('Yay, got Wit response: ' + JSON.stringify(data));
     if (typeof data.entities !== 'undefined'){
       // console.log(data.entities);
-
+      // If location, handle location
       if (typeof data.entities.location !== 'undefined'){
-                console.log('location');
+        console.log('location');
         var locationText = data.entities.location[0].value;
-
-
-
-
       } 
       // var dateTextStart ='2017-06-02';
       // var dateTextEnd = '2017-06-08';
+      //Extract Date from Wit Entities
       if (typeof data.entities.datetime !== 'undefined'){
         if (typeof data.entities.datetime[0].to !== 'undefined'){
           var dateTextStart = data.entities.datetime[0].from.value.substring(0,10);
@@ -270,7 +268,7 @@ function receivedMessage(event) {
         }
       } 
       // console.log(data.entities);
- 
+      // Call eventful API
       var options = { method: 'GET',
         url: 'http://api.eventful.com/json/events/search',
         qs: 
@@ -281,7 +279,7 @@ function receivedMessage(event) {
            app_key: process.env.EVENTFUL_KEY,
            image_sizes: 'large'
            // image_sizes: 'block100,large,dropshadow250' 
-         }
+          }
 
       };
       console.log(options);
@@ -292,57 +290,57 @@ function receivedMessage(event) {
           console.log(parsed.events.event[0].venue_name);
           console.log(parsed.events.event[0].start_time);
           var elements =[];
-
+          //Prepare the elements for Facebook Messenger carousal
             for (var ii=0; ii<Math.min(parsed.events.event.length,10);ii++) {
 
               if (parsed.events.event[ii].image){
-                    var elements0 = {
-                      title: parsed.events.event[ii].title,
-                      // subtitle: 'from USD' + priceQuote0.strike()+'/night (discounted from USD' + trip.hotelExpPrice0+'/night)',
-                      // subtitle: 'USD '+ trip.hotelPriceQuote+'/night; USD '+ trip.hotelPriceQuoteTotal+' total' + parsed.hotelRoomResponse[0].hasFreeCancellation===false?' ': '(Free Cancellation until '+parsed.hotelRoomResponse[0].freeCancellationWindowDate+')',
-                      // item_url: Object.keys(parsed.photos).length>1? 'http://media.expedia.com'+parsed.photos[1].url:'http://media.expedia.com'+parsed.photos[0].url,
-                      // image_url: 'http://media.expedia.com'+parsed.photos[1].url,
-                      image_url: parsed.events.event[ii].image.large.url,
+                var elements0 = {
+                  title: parsed.events.event[ii].title,
+                  // subtitle: 'from USD' + priceQuote0.strike()+'/night (discounted from USD' + trip.hotelExpPrice0+'/night)',
+                  // subtitle: 'USD '+ trip.hotelPriceQuote+'/night; USD '+ trip.hotelPriceQuoteTotal+' total' + parsed.hotelRoomResponse[0].hasFreeCancellation===false?' ': '(Free Cancellation until '+parsed.hotelRoomResponse[0].freeCancellationWindowDate+')',
+                  // item_url: Object.keys(parsed.photos).length>1? 'http://media.expedia.com'+parsed.photos[1].url:'http://media.expedia.com'+parsed.photos[0].url,
+                  // image_url: 'http://media.expedia.com'+parsed.photos[1].url,
+                  image_url: parsed.events.event[ii].image.large.url,
 
-                      // image_url:Object.keys(parsed1.hotels[0].images).length>i? 'http://photos.hotelbeds.com/giata/'+parsed1.hotels[0].images[i+1].path:'photos.hotelbeds.com/giata/'+parsed1.hotels[0].images[0].path,
-                      subtitle: parsed.events.event[ii].venue_name+ ', '+parsed.events.event[ii].start_time,
-                      buttons: [{
-                          type: "web_url",
-                          title: "Learn More",
-                          url: parsed.events.event[ii].url
-                        }
-                      ],
-                    };
-                    // console.log('elements0' + i);
-                    elements.push(elements0);
-
-                  }
-              }
-
-                  //TODO: save data to firebase
-
-
-                  var messageData = {
-                    recipient: {
-                      id: senderID
-                    },
-                    message: {
-                      attachment: {
-                        type: "template",
-                        payload: {
-                          template_type: "generic",
-                          elements: elements,
-                        }
-                      }
+                  // image_url:Object.keys(parsed1.hotels[0].images).length>i? 'http://photos.hotelbeds.com/giata/'+parsed1.hotels[0].images[i+1].path:'photos.hotelbeds.com/giata/'+parsed1.hotels[0].images[0].path,
+                  subtitle: parsed.events.event[ii].venue_name+ ', '+parsed.events.event[ii].start_time,
+                  buttons: [{
+                      type: "web_url",
+                      title: "Learn More",
+                      url: parsed.events.event[ii].url
                     }
-                  };
+                  ],
+                };
+                // console.log('elements0' + i);
+                elements.push(elements0);
+
+              }
+            }
+
+                  
+            // Send to FB API 
+
+            var messageData = {
+              recipient: {
+                id: senderID
+              },
+              message: {
+                attachment: {
+                  type: "template",
+                  payload: {
+                    template_type: "generic",
+                    elements: elements,
+                  }
+                }
+              }
+            };
 
 
-                  callSendAPI(messageData);
+            callSendAPI(messageData);
       })
       .catch(err => console.log(err))
     } else {
-      console.log('no entities')
+      console.log('no entities');
     }
   })
 
